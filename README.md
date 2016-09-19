@@ -12,8 +12,8 @@ Service (think JupyterHub) is running on port 9000 internally.
 Auth Service (Python server) running on port 8000 internally.
 
 Each request needs to have an auth token, which will be checked by the auth service.
-If no auth token is provided or the token is not valid then redirect to then auth service login form.
-If auth token is valid route to internal service on port 9000, passing the auth token and all additional headers required by all services.
+If no auth token is provided or the token is not valid then the request will be sent to the auth service login form.
+If auth token is valid route to the internal service (ex. port 9000), passing the auth token and all additional headers required by all services.
 
 When you login to the auth service it will provide an auth token which will be used for subsequent requests.
 
