@@ -17,12 +17,14 @@ If auth token is valid route to the internal service (ex. port 9000), passing th
 
 When you login to the auth service it will provide an auth token which will be used for subsequent requests.
 
+[Diagram](https://github.com/Siecje/nginx-auth-proxy/blob/master/steps.md)
+
 ## Adding a new service
 
 Add the nginx config to run the service locally on an available port.
-Configure the new service to authenticate via ```REMOTE_USER```.
-Add the required headers for the service to ```authenticator.py```
-Restart ```nginx```.
+Configure the new service to authenticate via `REMOTE_USER`.
+Add the required headers for the service to `authenticator.py`
+Restart `nginx`.
 
 ## Running
 
@@ -48,5 +50,5 @@ python authenticator.py &
 python service.py &
 ```
 
-When you visit ```http://localhost:8081``` you will need to login.
+When you visit `http://localhost:8081` you will need to login.
 As long as you use the username 'admin' you will be able to access the service.
