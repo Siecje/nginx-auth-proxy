@@ -21,10 +21,12 @@ When you login to the auth service it will provide an auth token which will be u
 
 ## Adding a new service
 
-Add the nginx config to run the service locally on an available port.
-Configure the new service to authenticate via `REMOTE_USER`.
-Add the required headers for the service to `authenticator.py`
-Restart `nginx`.
+- Add the nginx config to run the service locally on an available port.
+
+- Configure the new service to authenticate via `REMOTE_USER` or
+add the required headers for the service to `authenticator.py` and `nginx.conf`.
+
+- Restart `nginx` to reload the nginx configuration.
 
 ## Running
 

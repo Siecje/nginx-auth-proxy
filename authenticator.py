@@ -36,12 +36,9 @@ def ValidUser(user, password):
 @app.route('/', methods=['GET'])
 def authenticate():
     token = request.cookies.get('token')
-    print(token)
     if token is None:
         abort(401)
     username, password = DecodeToken(token)
-    print(username)
-    print(password)
     if ValidUser(username, password) is not None:
         # Add headers to be authenticated with services
         resp = make_response()
@@ -54,10 +51,8 @@ def authenticate():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     target = request.headers.get('X-Original-URI', '')
-    print 'Target: ' + target
     form = LoginForm(target = target)
     if form.validate_on_submit():
-        print 'inside'
         username = form.login.data
         password = form.password.data
         target = form.target.data
@@ -65,11 +60,10 @@ def login():
         if auth_token:
             resp = make_response(redirect(target))
             resp.set_cookie('token', auth_token)
-            print "before target"
-            print target
             resp.headers['Location'] = target
+            resp.headers['REMOTE_USER'] = username
+            resp.headers['X-WEBAUTH-USER'] = username
             return resp
-
     return render_template('login.html', form=form)
 
 
