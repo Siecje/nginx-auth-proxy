@@ -37,6 +37,11 @@ sudo apt-get install nginx-full
 ```
 
 ```shell
+git clone https://github.com/Siecje/nginx-auth-proxy
+cd nginx-auth-proxy
+```
+
+```shell
 virtualenv venv
 source venv/bin/activate
 pip install -r requirements.txt
