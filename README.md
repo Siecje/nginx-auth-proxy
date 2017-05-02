@@ -57,5 +57,9 @@ python authenticator.py &
 python service.py &
 ```
 
+```shell
+sudo service nginx restart
+```
+
 When you visit `http://localhost:8081` you will need to login.
 As long as you use the username 'admin' you will be able to access the service.
