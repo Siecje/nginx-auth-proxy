@@ -63,6 +63,7 @@ def login():
             resp.headers['Location'] = target
             resp.headers['REMOTE_USER'] = username
             resp.headers['X-WEBAUTH-USER'] = username
+            resp.headers['X-Forwarded-User'] = username
             return resp
     return render_template('login.html', form=form)
 
