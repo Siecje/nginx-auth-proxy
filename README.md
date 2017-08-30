@@ -45,6 +45,12 @@ cd nginx-auth-proxy
 
 ```shell
 sudo rm /etc/nginx/sites-enabled/default
+sudo mkdir /etc/nginx/include.d/
+```
+
+```shell
+sudo ln -s `pwd`/include.d/authentication.include /etc/nginx/include.d/authentication.include
+sudo ln -s `pwd`/include.d/application.include /etc/nginx/include.d/application.include
 ```
 
 ```shell
