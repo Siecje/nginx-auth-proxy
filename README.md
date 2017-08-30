@@ -41,6 +41,24 @@ git clone https://github.com/Siecje/nginx-auth-proxy
 cd nginx-auth-proxy
 ```
 
+### Configure nginx
+
+```shell
+sudo rm /etc/nginx/sites-enabled/default
+```
+
+```shell
+sudo ln -s `pwd`/conf.d/authenticator.conf /etc/nginx/conf.d/authenticator.conf
+sudo ln -s `pwd`/conf.d/service1.conf /etc/nginx/conf.d/service1.conf
+sudo ln -s `pwd`/conf.d/service2.conf /etc/nginx/conf.d/service2.conf
+```
+
+```shell
+sudo service nginx restart
+```
+
+### Start services
+
 ```shell
 virtualenv venv
 source venv/bin/activate
@@ -48,18 +66,12 @@ pip install -r requirements.txt
 ```
 
 ```shell
-sudo mv /etc/nginx/nginx.conf /etc/nginx/nginx_backup.conf
-sudo ln -s nginx.conf /etc/nginx/nginx.conf
-```
-
-```shell
 python authenticator.py &
-python service.py &
-```
-
-```shell
-sudo service nginx restart
+python service1.py &
+python service2.py &
 ```
 
 When you visit `http://localhost:8081` you will need to login.
 As long as you use the username 'admin' you will be able to access the service.
+
+You will then be able to visit `http://localhost:8082` without logging in.
