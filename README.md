@@ -3,35 +3,34 @@
 ## Problem
 
 You have multiple services running on the same server on different ports or subdomains.
-You want to use the same authentication (login and password) for every service without having to login to each one (Single Sign On).
 You want passwords to validate against one source of truth.
+You want to use the same authentication (login and password) for every service without having to login to each one (Single Sign On).
 
 ## How does it work
 
-Service (think JupyterHub) is running on port 9000 internally.
-Auth Service (Python server) running on port 8000 internally.
+Services are running locally on a specific port. For example JupyterHub is running on port 9000 internally.
+Auth Service is running on port 8000 internally. It can be a Python webserver or anything else as long as it is running on port 8000 internally.
 
 Each request needs to have an auth token, which will be checked by the auth service.
+If the auth token is valid, route the request to the internal service (ex. port 9000), passing the auth token and any additional headers.
 If no auth token is provided or the token is not valid then the request will be sent to the auth service login form.
-If auth token is valid route to the internal service (ex. port 9000), passing the auth token and all additional headers required by all services.
 
 When you login to the auth service it will provide an auth token which will be used for subsequent requests.
 
 [Diagram](https://github.com/Siecje/nginx-auth-proxy/blob/master/steps.md)
 
-Using the `ngx_http_auth_request_module` with LDAP authentication is described in this article.
-https://www.nginx.com/blog/nginx-plus-authenticate-users/
+Using the `ngx_http_auth_request_module` with LDAP authentication is described in this article https://www.nginx.com/blog/nginx-plus-authenticate-users/.
 
 ## Adding a new service
 
 - Add the nginx config to run the service locally on an available port.
 
 - Configure the new service to authenticate via `REMOTE_USER` or
-add the required headers for the service to `authenticator.py` and `nginx.conf`.
+add the required headers for the service to `authenticator.py` and `include.d/application.include`.
 
 - Restart `nginx` to reload the nginx configuration.
 
-## Running
+## Run demo
 
 You will need NGINX with the [ngx_http_auth_request_module](http://nginx.org/en/docs/http/ngx_http_auth_request_module.html) installed.
 
@@ -75,7 +74,7 @@ pip install -r requirements.txt
 ```
 
 ```shell
-python authenticator.py &
+FLASK_DEBUG=1 python authenticator.py &
 python service1.py &
 python service2.py &
 ```
@@ -84,3 +83,13 @@ When you visit `http://localhost:8081` you will need to login.
 As long as you use the username 'admin' you will be able to access the service.
 
 You will then be able to visit `http://localhost:8082` without logging in.
+
+## Run in production
+
+- [ ] Implement the authentication logic in `ValidUser()` in `authenticator.py`.
+
+- [ ] Create secret_key file
+
+  - python -c 'import os; print(os.urandom(32))' > secret_key
+
+- [ ] Add HTTPS certificate to `include.d/certificate.include`
