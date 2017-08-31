@@ -19,6 +19,9 @@ When you login to the auth service it will provide an auth token which will be u
 
 [Diagram](https://github.com/Siecje/nginx-auth-proxy/blob/master/steps.md)
 
+Using the `ngx_http_auth_request_module` with LDAP authentication is described in this article.
+https://www.nginx.com/blog/nginx-plus-authenticate-users/
+
 ## Adding a new service
 
 - Add the nginx config to run the service locally on an available port.
