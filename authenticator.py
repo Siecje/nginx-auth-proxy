@@ -1,14 +1,33 @@
 import base64
+import errno
+import os
+import sys
 
-from flask import Flask, abort, make_response, redirect, render_template, request
+from flask import (Flask, abort, make_response, redirect, render_template,
+                   request)
 from flask_wtf import Form
 from wtforms import HiddenField, StringField, PasswordField
 from wtforms.validators import DataRequired
 
+THIS_DIR = os.path.abspath(os.path.dirname(__file__))
+
 app = Flask(__name__)
-app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 AUTH_PORT = 8000
+
+if app.debug is True:
+    app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+else:
+    try:
+        secret_key_path = os.path.join(THIS_DIR, 'secret_key')
+        app.secret_key = open(secret_key_path, 'rb').read()
+    except IOError as exc:
+        if errno.ENOENT == exc.errno:
+            print('authenticator.py cannot find {}.'.format(secret_key_path))
+            print('Create it with \npython -c '
+                  "'import os; print(os.urandom(32))' > {}".format(secret_key_path))
+            sys.exit(1)
+        raise exc
 
 
 class LoginForm(Form):
@@ -51,7 +70,7 @@ def authenticate():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     target = request.headers.get('X-Original-URI', '')
-    form = LoginForm(target = target)
+    form = LoginForm(target=target)
     if form.validate_on_submit():
         username = form.login.data
         password = form.password.data
@@ -59,7 +78,13 @@ def login():
         auth_token = ValidUser(username, password)
         if auth_token:
             resp = make_response(redirect(target))
-            resp.set_cookie('token', auth_token)
+
+            secure = True if app.debug is False else False
+            resp.set_cookie('token', auth_token,
+                            secure=app.debug,
+                            httponly=True)
+
+            # Set headers that will be received by the service for this request
             resp.headers['Location'] = target
             resp.headers['REMOTE_USER'] = username
             resp.headers['X-WEBAUTH-USER'] = username
@@ -69,4 +94,4 @@ def login():
 
 
 if __name__ == '__main__':
-    app.run(port = AUTH_PORT)
+    app.run(port=AUTH_PORT)
