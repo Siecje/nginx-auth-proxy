@@ -43,6 +43,23 @@ git clone https://github.com/Siecje/nginx-auth-proxy
 cd nginx-auth-proxy
 ```
 
+### Simulate subdomains locally
+
+This will resolve both `one.localhost` and `two.localhost` to `localhost`.
+
+```shell
+echo "127.0.0.1 one.localhost" | sudo tee -a /etc/hosts
+echo "127.0.0.1 one.localhost" | sudo tee -a /etc/hosts
+```
+
+### Create self signed certificate
+
+```shell
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes -subj '/CN=localhost'
+sudo mv cert.pem /etc/ssl/certs/
+sudo mv key.pem /etc/ssl/certs/
+```
+
 ### Configure nginx
 
 ```shell
@@ -74,7 +91,7 @@ pip install -r requirements.txt
 ```
 
 ```shell
-FLASK_DEBUG=1 python authenticator.py &
+python authenticator.py &
 python service1.py &
 python service2.py &
 ```
@@ -82,7 +99,7 @@ python service2.py &
 When you visit `http://localhost:8081` you will need to login.
 As long as you use the username 'admin' you will be able to access the service.
 
-You will then be able to visit `http://localhost:8082` without logging in.
+You will then be able to visit `http://localhost:8082` and login with the same username and password.
 
 ## Run in production
 

@@ -88,7 +88,6 @@ def login():
                             )
 
             # Set headers that will be received by the service for this request
-            resp.headers['Location'] = target
             resp.headers['REMOTE_USER'] = username
             resp.headers['X-WEBAUTH-USER'] = username
             resp.headers['X-Forwarded-User'] = username

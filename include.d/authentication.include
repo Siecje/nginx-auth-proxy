@@ -1,6 +1,6 @@
 location /login {
     proxy_pass http://authenticator/login;
-    proxy_set_header Host $host:$server_port;
+    proxy_set_header Host $host;
     proxy_set_header X-Original-URI $request_uri;
     proxy_set_header X-Real-IP $remote_addr;
 }
