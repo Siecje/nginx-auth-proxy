@@ -80,9 +80,12 @@ def login():
             resp = make_response(redirect(target))
 
             secure = True if app.debug is False else False
+            # Secure limits cookies to HTTPS traffic only.
+            # HttpOnly prevents JavaScript from reading the cookie
             resp.set_cookie('token', auth_token,
-                            secure=app.debug,
-                            httponly=True)
+                            secure=secure,
+                            httponly=True,
+                            )
 
             # Set headers that will be received by the service for this request
             resp.headers['Location'] = target
