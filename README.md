@@ -96,10 +96,10 @@ python service1.py &
 python service2.py &
 ```
 
-When you visit `http://localhost:8081` you will need to login.
+When you visit `http://one.localhost/` you will be redirected to `http://one.localhost/` and need to login.
 As long as you use the username 'admin' you will be able to access the service.
 
-You will then be able to visit `http://localhost:8082` and login with the same username and password.
+You will then be able to visit `https://two.localhost` and login with the same username and password.
 
 ## Run in production
 
