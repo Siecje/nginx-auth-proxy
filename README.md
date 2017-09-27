@@ -49,7 +49,7 @@ This will resolve both `one.localhost` and `two.localhost` to `localhost`.
 
 ```shell
 echo "127.0.0.1 one.localhost" | sudo tee -a /etc/hosts
-echo "127.0.0.1 one.localhost" | sudo tee -a /etc/hosts
+echo "127.0.0.1 two.localhost" | sudo tee -a /etc/hosts
 ```
 
 ### Create self signed certificate
