@@ -69,7 +69,7 @@ def authenticate():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    target = request.headers.get('X-Original-URI', '')
+    target = request.headers.get('X-Original-URI', '/')
     form = LoginForm(target=target)
     if form.validate_on_submit():
         username = form.login.data
