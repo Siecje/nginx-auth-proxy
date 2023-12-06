@@ -17,7 +17,11 @@ If no auth token is provided or the token is not valid then the request will be 
 
 When you login to the auth service it will provide an auth token which will be used for subsequent requests.
 
-[Diagram](https://github.com/Siecje/nginx-auth-proxy/blob/master/steps.md)
+![Step 1](https://raw.githubusercontent.com/siecje/nginx-auth-proxy/master/notes/first.png)
+
+![Step 2](https://raw.githubusercontent.com/siecje/nginx-auth-proxy/master/notes/second.png)
+
+![Step 3](https://raw.githubusercontent.com/siecje/nginx-auth-proxy/master/notes/third.png)
 
 Using the `ngx_http_auth_request_module` with LDAP authentication is described in this article https://www.nginx.com/blog/nginx-plus-authenticate-users/.
 
@@ -85,15 +89,15 @@ sudo service nginx restart
 ### Start services
 
 ```shell
-virtualenv venv
-source venv/bin/activate
-pip install -r requirements.txt
+python -m venv venv
+venv/bin/python -m pip install pip setuptools wheel --upgrade
+venv/bin/python -m pip install -r requirements.txt
 ```
 
 ```shell
-python authenticator.py &
-python service1.py &
-python service2.py &
+venv/bin/python authenticator.py &
+venv/bin/python service1.py &
+venv/bin/python service2.py &
 ```
 
 When you visit `http://one.localhost/` you will be redirected to `http://one.localhost/` and need to login.
@@ -103,7 +107,7 @@ You will then be able to visit `https://two.localhost` and login with the same u
 
 ## Run in production
 
-- [ ] Implement the authentication logic in `ValidUser()` in `authenticator.py`.
+- [ ] Implement the authentication logic in `valid_user()` in `authenticator.py`.
 
 - [ ] Create secret_key file
 

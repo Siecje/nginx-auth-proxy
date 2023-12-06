@@ -9,6 +9,7 @@ from flask_wtf import Form
 from wtforms import HiddenField, StringField, PasswordField
 from wtforms.validators import DataRequired
 
+
 THIS_DIR = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
@@ -36,19 +37,19 @@ class LoginForm(Form):
     target = HiddenField('Target', validators=[DataRequired()])
 
 
-def EncodeToken(user, password):
+def encode_token(user, password):
     return base64.b64encode(user + ':' + password)
 
 
-def DecodeToken(token):
+def decode_token(token):
     auth_decoded = base64.b64decode(token)
     user, password = auth_decoded.split(':', 2)
     return user, password
 
 
-def ValidUser(user, password):
+def valid_user(user, password):
     if user == 'admin':
-        enc = EncodeToken(user, password)
+        enc = encode_token(user, password)
         return enc
 
 
@@ -57,12 +58,13 @@ def authenticate():
     token = request.cookies.get('token')
     if token is None:
         abort(401)
-    username, password = DecodeToken(token)
-    if ValidUser(username, password) is not None:
+    username, password = decode_token(token)
+    if valid_user(username, password) is not None:
         # Add headers to be authenticated with services
         resp = make_response()
         resp.headers['REMOTE_USER'] = username
         resp.headers['X-WEBAUTH-USER'] = username
+        # TODO: add user headers
         return resp
     abort(401)
 
@@ -75,7 +77,7 @@ def login():
         username = form.login.data
         password = form.password.data
         target = form.target.data
-        auth_token = ValidUser(username, password)
+        auth_token = valid_user(username, password)
         if auth_token:
             resp = make_response(redirect(target))
 
