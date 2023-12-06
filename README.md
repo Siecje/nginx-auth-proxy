@@ -6,7 +6,7 @@ You have multiple services running on the same server on different ports or subd
 You want passwords to validate against one source of truth.
 You want to use the same authentication (login and password) for every service without having to login to each one (Single Sign On).
 
-## How does it work
+## How it works
 
 Services are running locally on a specific port. For example JupyterHub is running on port 9000 internally.
 Auth Service is running on port 8000 internally. It can be a Python webserver or anything else as long as it is running on port 8000 internally.
